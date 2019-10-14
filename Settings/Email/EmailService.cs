@@ -27,21 +27,21 @@ namespace Base.Settings.Email
             try
             {
 
-                using (var client = new SmtpClient())
+                using var client = new SmtpClient
                 {
-                    client.SslProtocols = System.Security.Authentication.SslProtocols.Tls |
-                                          System.Security.Authentication.SslProtocols.Tls12 |
-                                          System.Security.Authentication.SslProtocols.Tls11;
-                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    SslProtocols = System.Security.Authentication.SslProtocols.Tls |
+                System.Security.Authentication.SslProtocols.Tls12 |
+                System.Security.Authentication.SslProtocols.Tls11,
+                    ServerCertificateValidationCallback = (s, c, h, e) => true
+                };
 
-                    client.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.SmtpPort, true);
+                client.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.SmtpPort, true);
 
-                    // Note: only needed if the SMTP server requires authentication
-                    client.Authenticate(_emailConfiguration.EmailAccount, _emailConfiguration.EmailPassword);
+                // Note: only needed if the SMTP server requires authentication
+                client.Authenticate(_emailConfiguration.EmailAccount, _emailConfiguration.EmailPassword);
 
-                    client.Send(message);
-                    client.Disconnect(true);
-                }
+                client.Send(message);
+                client.Disconnect(true);
             }
             catch
             {

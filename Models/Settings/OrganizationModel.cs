@@ -1,9 +1,9 @@
 using Base.Models.Utils;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Entities;
+using MongoDB.Entities.Common;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Base.Models.Settings

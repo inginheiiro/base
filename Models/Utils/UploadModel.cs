@@ -1,5 +1,5 @@
 ﻿using Base.Models.Base;
-using MongoDB.Entities;
+using MongoDB.Entities.Common;
 using System;
 using System.Collections.Generic;
 

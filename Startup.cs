@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MongoDB.Entities;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
@@ -39,7 +40,7 @@ namespace Base
             })
             .AddJwtInMemoryRefreshTokenStore()
             .AddMvcCore()
-            .AddJsonFormatters()
+            .AddNewtonsoftJson()            
             .AddApiExplorer()
             .AddAuthorization();                       
             services.AddResponseCompression();
@@ -60,10 +61,10 @@ namespace Base
             services.AddDbContext<DatabaseContext>(opts => opts.UseSqlServer(connectionString));
             */
             
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "WP API", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo {Title = "WP API", Version = "v1"}); });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -92,7 +93,12 @@ namespace Base
                 }
             );
 
-            app.UseMvc();
+           app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
+            });
         }
     }
 }

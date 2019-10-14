@@ -47,22 +47,23 @@ namespace Base
         
         private static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                 .UseKestrel(
-                    options =>
-                    {
-                        options.Limits.MaxConcurrentConnections = 100;
-                        options.Limits.MaxConcurrentUpgradedConnections = 100;
-                        options.Limits.MaxRequestBodySize = null;
-                        options.Limits.MaxRequestHeadersTotalSize= 65000;
-                        options.Limits.MinRequestBodyDataRate =
-                            new MinDataRate(bytesPerSecond: 100, gracePeriod: TimeSpan.FromSeconds(10));
-                        options.Limits.MinResponseDataRate =
-                            new MinDataRate(bytesPerSecond: 100, gracePeriod: TimeSpan.FromSeconds(10));
+                // .UseKestrel(
+                //    options =>
+                //    {
+                //        options.Limits.MaxConcurrentConnections = 100;
+                //        options.Limits.MaxConcurrentUpgradedConnections = 100;
+                //        options.Limits.MaxRequestBodySize = null;
+                //        options.Limits.MaxRequestHeadersTotalSize= 65000;
+                //        options.Limits.MinRequestBodyDataRate =
+                //            new MinDataRate(bytesPerSecond: 100, gracePeriod: TimeSpan.FromSeconds(10));
+                //        options.Limits.MinResponseDataRate =
+                //            new MinDataRate(bytesPerSecond: 100, gracePeriod: TimeSpan.FromSeconds(10));
 
-                        options.AddServerHeader = false;                                               
-                    }
-                )
+                //        options.AddServerHeader = false;                                               
+                //    }
+                //)
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseSerilog()
                 .Build();

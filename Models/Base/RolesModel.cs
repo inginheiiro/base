@@ -1,5 +1,6 @@
 
 using MongoDB.Entities;
+using MongoDB.Entities.Common;
 
 namespace Base.Models.Base
 {
